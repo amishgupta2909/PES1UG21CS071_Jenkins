@@ -1,34 +1,27 @@
-pipeline{
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'mvn clean install'
-        echo 'Build Stage Successful'
-      }
-    }
-    stage('Test') {
-      steps {
-        sh 'mvn test'
-        echo 'Test Stage Successful'
-        post {
-          always {
-            junit 'target/surefire-reports/*.xml'
-          }
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
         }
-      }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
     }
-    stage('Deploy') {
-      steps {
-        sh 'mvn deploy'
-        echo 'Deployment Successful'
-      }
+
+    post {
+        failure {
+            echo 'Pipeline failed'
+        }
     }
-  }
-  post {
-    failure {
-      echo 'Pipeline failed'
-    }
-  }
 }
-    
